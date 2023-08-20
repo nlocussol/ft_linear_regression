@@ -8,7 +8,6 @@ def main():
         mileage = data.km.values
         price = data.price.values
 
-        # Normalize the data
         normalized_mileage = (mileage - np.mean(mileage)) / np.std(mileage)
         normalized_price = (price - np.mean(price)) / np.std(price)
 
@@ -18,7 +17,6 @@ def main():
 
         theta0, theta1 = 0, 0
 
-        # Gradient Descent
         for _ in range(iterations):
             gradient_theta0 = 0
             gradient_theta1 = 0
@@ -31,14 +29,11 @@ def main():
             theta0 -= learning_rate * (1/n) * gradient_theta0
             theta1 -= learning_rate * (1/n) * gradient_theta1
 
-        # Denormalize the parameters
         denorm_theta0 = (np.mean(price) - theta1 * np.mean(mileage)) / np.std(mileage)
         denorm_theta1 = theta1 * np.std(price) / np.std(mileage)
 
-        # Denormalize the predicted prices
         denorm_predicted_prices = denorm_theta0 + denorm_theta1 * mileage
 
-        # Plotting
         plt.scatter(mileage, price, label='Data')
         plt.plot(mileage, denorm_predicted_prices, color='red', label='Regression Line')
         plt.xlabel('Kilometers')
