@@ -12,6 +12,8 @@ def main():
             theta0, theta1 = 0, 0
             
         mileage = input("Enter a mileage (in km): ") # handle negative
+        if (float(mileage) < 0):
+            raise Exception("mileage can't be negative!")
         print(f"This car worth {theta0 + theta1 * float(mileage):.0f} euro")
     except Exception as e:
         print(f"Error: {e}")
