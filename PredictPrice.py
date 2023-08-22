@@ -4,10 +4,10 @@ import os
 def main():
     try:
         if os.path.isfile("./dataset/theta.csv"):
-            theta_data = pd.read_csv("./theta.csv")
-            last_row = theta_data.iloc[-1]
-            theta0 = last_row['theta0']
-            theta1 = last_row['theta1']
+            theta_data = pd.read_csv("./dataset/theta.csv")
+            first_row = theta_data.iloc[0]
+            theta0 = first_row['theta0']
+            theta1 = first_row['theta1']
         else:
             theta0, theta1 = 0, 0
             
