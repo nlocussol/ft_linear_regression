@@ -2,46 +2,38 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+
 def main():
     try:
-        data = pd.read_csv("./data.csv")
-        mileage = data.km.values
-        price = data.price.values
+        data = pd.read_csv('data.csv')
+        X = data.km.values
+        y = data.price.values
 
-        normalized_mileage = (mileage - np.mean(mileage)) / np.std(mileage)
-        normalized_price = (price - np.mean(price)) / np.std(price)
+        n = len(X)
 
-        n = len(normalized_mileage)
-        learning_rate = 0.01
-        iterations = 1000
+        normalized_X = X / np.linalg.norm(X)
+        normalized_y = y / np.linalg.norm(y)
 
-        theta0, theta1 = 0, 0
+        theta0 = 0
+        theta1 = 0
 
-        for _ in range(iterations):
-            gradient_theta0 = 0
-            gradient_theta1 = 0
-                    
+        lr = 0.5
+        for _ in range(1000):
+            sigma_theta0 = 0
+            sigma_theta1 = 0
             for i in range(n):
-                prediction = theta0 + theta1 * normalized_mileage[i]
-                gradient_theta0 += prediction - normalized_price[i]
-                gradient_theta1 += (prediction - normalized_price[i]) * normalized_mileage[i]
-                    
-            theta0 -= learning_rate * (1/n) * gradient_theta0
-            theta1 -= learning_rate * (1/n) * gradient_theta1
+                sigma_theta0 += (theta0 + theta1 * normalized_X[i]) - normalized_y[i]
+                sigma_theta1 += ((theta0 + theta1 * normalized_X[i]) - normalized_y[i]) * normalized_X[i]
+            theta0 -= lr * (1 / n) * sigma_theta0
+            theta1 -= lr * (1 / n) * sigma_theta1
 
-        denorm_theta0 = (np.mean(price) - theta1 * np.mean(mileage)) / np.std(mileage)
-        denorm_theta1 = theta1 * np.std(price) / np.std(mileage)
-
-        denorm_predicted_prices = denorm_theta0 + denorm_theta1 * mileage
-
-        plt.scatter(mileage, price, label='Data')
-        plt.plot(mileage, denorm_predicted_prices, color='red', label='Regression Line')
-        plt.xlabel('Kilometers')
-        plt.ylabel('Price')
-        plt.legend()
-        plt.title('Linear Regression with Gradient Descent (Denormalized)')
+        formula = (theta0 + theta1 * normalized_X) * np.linalg.norm(y)
+        plt.scatter(X, y)
+        plt.plot(X, formula, c='r')
         plt.show()
 
+        
     except Exception as e:
         print(f"Error: {e}")
 
