@@ -20,12 +20,12 @@ def normalized_data():
 
     return normalized_X, normalized_y, np.linalg.norm(X), np.linalg.norm(y)
 
-def gradient_descent(X, y, norm_X, norm_y, lr=0.5):
+def gradient_descent(X, y, norm_X, norm_y, lr=0.5, iteration=1000):
     theta0 = 0
     theta1 = 0
     n = len(X)
 
-    for _ in range(1000):
+    for _ in range(iteration):
         sigma_theta0 = 0
         sigma_theta1 = 0
 
@@ -34,7 +34,7 @@ def gradient_descent(X, y, norm_X, norm_y, lr=0.5):
             sigma_theta1 += ((theta0 + theta1 * X[i]) - y[i]) * X[i]
 
         theta0 -= lr * (1 / n) * sigma_theta0
-        theta1 -= lr * (1 / n) *sigma_theta1
+        theta1 -= lr * (1 / n) * sigma_theta1
         update_theta(theta0 * norm_y, theta1 * norm_X)
 
     theta0 = theta0 * norm_y
@@ -69,6 +69,7 @@ def main():
         
     except Exception as e:
         print(f"Error: {e}")
+        return 1
 
 if __name__ == "__main__":
     main()
